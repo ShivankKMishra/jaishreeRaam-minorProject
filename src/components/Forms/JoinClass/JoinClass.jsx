@@ -34,8 +34,8 @@ function JoinClass({ isOpen, onClose }) {
                   name="classCode"
                   value={classCode}
                   onChange={handleInputChange}
-                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  placeholder="Enter class code"
+                  className="mt-1 block w-full border p-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  placeholder="Enter class code or Link"
                   required
                 />
               </div>
