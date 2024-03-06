@@ -1,6 +1,6 @@
-// src/components/sidebar/Sidebar.jsx
 import React from 'react';
-import HomeIcon from '@mui/icons-material/Home'; // Importing HomeIcon
+import { Link } from 'react-router-dom';
+import HomeIcon from '@mui/icons-material/Home';
 import LocalLibraryRoundedIcon from '@mui/icons-material/LocalLibraryRounded';
 import PollRoundedIcon from '@mui/icons-material/PollRounded';
 import ChecklistRtlRoundedIcon from '@mui/icons-material/ChecklistRtlRounded';
@@ -12,25 +12,25 @@ function Sidebar({ isOpen, toggleSidebar }) {
         <nav>
           <ul>
             <li className='hover:font-serif text-orange-400 hover:bg-orange-400 hover:text-white rounded-lg p-1 m-1'>
-              <button className="w-full flex items-center justify-start"> {/* Set button width to full and align content to start */}
+              <Link to="/Home" className="w-full flex items-center justify-start"> {/* Use Link component with 'to' attribute */}
                 <HomeIcon /> Classroom
-              </button>{/* Using HomeIcon */}
+              </Link>
             </li>
             {/* Add more sidebar items as needed */}
           </ul>
         </nav>
         <div className='w-full flex flex-col justify-between m-1 p-1 item-end py-10'>
-          <button className="w-full flex items-center justify-start my-8 hover:font-serif m-1 p-1 text-orange-400 hover:bg-orange-400 hover:text-white rounded-lg"> {/* Set button width to full and align content to start, add margin */}
+          <Link to="/Home/Library" className="w-full flex items-center justify-start my-8 hover:font-serif m-1 p-1 text-orange-400 hover:bg-orange-400 hover:text-white rounded-lg">
             <LocalLibraryRoundedIcon /> Library
-          </button>
+          </Link>
 
-          <button className="w-full flex items-center justify-start my-8 hover:font-serif m-1 p-1 text-orange-400 hover:bg-orange-400 hover:text-white rounded-lg"> {/* Set button width to full and align content to start, add margin */}
-            <PollRoundedIcon />/? Doubt and Poll
-          </button>
+          <Link to="/doubt-and-poll" className="w-full flex items-center justify-start my-8 hover:font-serif m-1 p-1 text-orange-400 hover:bg-orange-400 hover:text-white rounded-lg">
+            <PollRoundedIcon /> Doubt and Poll
+          </Link>
 
-          <button className="w-full flex items-center justify-start my-8 hover:font-serif m-1 p-1 text-orange-400 hover:bg-orange-400 hover:text-white rounded-lg"> {/* Set button width to full and align content to start, add margin */}
+          <Link to="/attendance" className="w-full flex items-center justify-start my-8 hover:font-serif m-1 p-1 text-orange-400 hover:bg-orange-400 hover:text-white rounded-lg">
             <ChecklistRtlRoundedIcon /> Attendance
-          </button>
+          </Link>
         </div>
       </div>
     </aside>

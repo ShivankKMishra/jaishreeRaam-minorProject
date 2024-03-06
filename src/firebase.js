@@ -1,8 +1,9 @@
-// Import the functions you need from the SDKs you need
-import {getAuth} from "firebase/auth"
+// firebase.js
+
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getFirestore, collection } from "firebase/firestore";
+import { useState, useEffect } from "react";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -17,5 +18,42 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app); // Initialize Firestore with the app instance
 
-export { auth };
+const googleProvider = new GoogleAuthProvider();
+
+// Sign in and check or create account in Firestore
+const signInWithGoogle = async () => {
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+    const user = result.user;
+    console.log("User signed in:", user);
+    console.log("User ID -", user.uid);
+    // Use db from Firestore to perform operations
+  } catch (err) {
+    alert(err.message);
+  }
+};
+
+const logout = () => {
+  auth.signOut();
+};
+
+// Custom hook to handle authentication state
+export const useAuthState = () => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  return [user, loading];
+};
+
+export { app, auth, db, signInWithGoogle, logout };

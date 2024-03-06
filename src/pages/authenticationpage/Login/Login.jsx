@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../../firebase';
+import { auth, signInWithGoogle } from './../../../firebase'; // Import Firebase configuration and signInWithGoogle function
+// Your other imports...
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [googleLoginClicked, setGoogleLoginClicked] = useState(false); // State to track Google login button click
   const navigate = useNavigate();
 
   const handleEmailChange = (e) => {
@@ -16,6 +18,17 @@ const LoginPage = () => {
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      setGoogleLoginClicked(true); // Set Google login button clicked
+      await signInWithGoogle(); // Sign in with Google
+      navigate('/Home'); // Redirect to home page after successful Google authentication
+    } catch (error) {
+      console.error('Error signing in with Google', error);
+      setError(error.message);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -54,11 +67,11 @@ const LoginPage = () => {
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
               <label htmlFor="email" className="sr-only">Email address</label>
-              <input id="email" name="email" type="email" autoComplete="email" required value={email} onChange={handleEmailChange} className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Email address" />
+              <input id="email" name="email" type="email" autoComplete="email" required value={email} onChange={handleEmailChange} className={`appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm ${googleLoginClicked ? 'opacity-50 pointer-events-none' : ''}`} placeholder="Email address" />
             </div>
             <div>
               <label htmlFor="password" className="sr-only">Password</label>
-              <input id="password" name="password" type="password" autoComplete="current-password" required value={password} onChange={handlePasswordChange} className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Password" />
+              <input id="password" name="password" type="password" autoComplete="current-password" required value={password} onChange={handlePasswordChange} className={`appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm ${googleLoginClicked ? 'opacity-50 pointer-events-none' : ''}`} placeholder="Password" />
             </div>
           </div>
           {/* Display error message if there is one */}
@@ -70,7 +83,7 @@ const LoginPage = () => {
               </Link>
             </div>
             <div>
-              <button type="submit" className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" disabled={loading}>
+              <button type="submit" className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${googleLoginClicked ? 'opacity-50 pointer-events-none' : ''}`} disabled={loading || googleLoginClicked}>
                 {loading ? (
                   <svg className="animate-spin h-5 w-5 mr-3 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -80,6 +93,11 @@ const LoginPage = () => {
                 {loading ? 'Signing in...' : 'Sign in'}
               </button>
             </div>
+          </div>
+          <div>
+            <button type="button" onClick={handleGoogleSignIn} className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+              Sign in with Google
+            </button>
           </div>
         </form>
       </div>

@@ -1,3 +1,4 @@
+// src\components\Layout\Layout.jsx
 import React, { useState } from 'react';
 import Header from '../Header/Header';
 import Sidebar from '../Sidebar/Sidebar';
@@ -6,7 +7,7 @@ import Footer from '../Footer/Footer';
 import JoinClass from '../Forms/JoinClass/JoinClass'; // Import the JoinClass component
 
 export const Layout = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isJoinClassOpen, setIsJoinClassOpen] = useState(false); // State for JoinClass popup
 
   const toggleSidebar = () => {
@@ -21,7 +22,7 @@ export const Layout = () => {
     <>
       <Header toggleSidebar={toggleSidebar} toggleJoinClass={toggleJoinClass} /> {/* Pass down toggleJoinClass */}
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-      <div className={`ml-64 transition-all ease-in-out ${isSidebarOpen ? 'pl-72' : 'pl-16'}`}>
+      <div className={` transition-all ease-in-out ${isSidebarOpen ? 'pl-72' : 'pl-16'}`}>
         {/* Adjust the styling for the main content area based on sidebar state */}
         <Outlet />
       </div>

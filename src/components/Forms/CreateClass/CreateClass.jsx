@@ -1,28 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useRecoilState } from "recoil";
+import { getAuth } from "firebase/auth";
+import { getFirestore, collection, doc, addDoc, updateDoc, setDoc, getDoc } from "firebase/firestore"; // Import getDoc function
+
+import { createDialogAtom } from "../../../utils/atom";
 
 function CreateClass({ isOpen, onClose }) {
-  const [className, setClassName] = useState('');
-  const [subjectName, setSubjectName] = useState('');
-  const [year, setYear] = useState('');
-  const [semester, setSemester] = useState('');
-  const [section, setSection] = useState('');
+  const auth = getAuth();
+  const db = getFirestore();
+
+  const [user] = useAuthState(auth);
+  const [open, setOpen] = useState(false);
+  const [className, setClassName] = useState("");
+  const [subjectName, setSubjectName] = useState("");
+  const [year, setYear] = useState("");
+  const [semester, setSemester] = useState("");
+  const [section, setSection] = useState("");
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     switch (name) {
-      case 'className':
+      case "className":
         setClassName(value);
         break;
-      case 'subjectName':
+      case "subjectName":
         setSubjectName(value);
         break;
-      case 'year':
+      case "year":
         setYear(value);
         break;
-      case 'semester':
+      case "semester":
         setSemester(value);
         break;
-      case 'section':
+      case "section":
         setSection(value);
         break;
       default:
@@ -30,20 +45,62 @@ function CreateClass({ isOpen, onClose }) {
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Here, you can handle the form submission logic
-    // For now, let's just log the form data
-    const formData = {
-      className,
-      subjectName,
-      year,
-      semester,
-      section,
-    };
-    console.log('Form Data:', formData);
-    // You can also close the popup after form submission
-    onClose();
+    try {
+      // Add a new document to the "classes" collection
+      const newClassRef = await addDoc(collection(db, "classes"), {
+        creatorUid: user.uid,
+        name: className,
+        creatorName: user.displayName,
+        creatorPhoto: user.photoURL,
+        posts: [],
+        subjectName,
+        year,
+        semester,
+        section,
+      });
+
+      // Check if the user document exists
+      const userDocRef = doc(db, "users", user.uid);
+      const userDocSnapshot = await getDoc(userDocRef);
+
+      if (userDocSnapshot.exists()) {
+        // Update the current user's enrolledClassrooms array
+        const userData = userDocSnapshot.data();
+        let userClasses = [];
+        if (userData && userData.enrolledClassrooms) {
+          userClasses = [...userData.enrolledClassrooms];
+        }
+        userClasses.push({
+          id: newClassRef.id,
+          name: className,
+          creatorName: user.displayName,
+          creatorPhoto: user.photoURL,
+        });
+
+        await updateDoc(userDocRef, {
+          enrolledClassrooms: userClasses,
+        });
+      } else {
+        // Create the user document if it doesn't exist
+        await setDoc(userDocRef, {
+          enrolledClassrooms: [{
+            id: newClassRef.id,
+            name: className,
+            creatorName: user.displayName,
+            creatorPhoto: user.photoURL,
+          }],
+        });
+      }
+
+      // Handle success, close dialog, show message, etc.
+      handleClose();
+      alert("Classroom created successfully!");
+    } catch (err) {
+      // Handle error
+      alert(`Cannot create class - ${err.message}`);
+    }
   };
 
   return (
