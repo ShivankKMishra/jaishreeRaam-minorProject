@@ -4,6 +4,8 @@ import HomeIcon from '@mui/icons-material/Home';
 import LocalLibraryRoundedIcon from '@mui/icons-material/LocalLibraryRounded';
 import PollRoundedIcon from '@mui/icons-material/PollRounded';
 import ChecklistRtlRoundedIcon from '@mui/icons-material/ChecklistRtlRounded';
+import NewspaperIcon from '@mui/icons-material/Newspaper';
+import AutoStoriesTwoToneIcon from '@mui/icons-material/AutoStoriesTwoTone';
 
 function Sidebar({ isOpen, toggleSidebar }) {
   return (
@@ -31,6 +33,16 @@ function Sidebar({ isOpen, toggleSidebar }) {
           <Link to="/attendance" className="w-full flex items-center justify-start my-8 hover:font-serif m-1 p-1 text-orange-400 hover:bg-orange-400 hover:text-white rounded-lg">
             <ChecklistRtlRoundedIcon /> Attendance
           </Link>
+
+           <Link to="/Home/Feed" className="w-full flex items-center justify-start my-8 hover:font-serif m-1 p-1 text-orange-400 hover:bg-orange-400 hover:text-white rounded-lg">
+           <NewspaperIcon/>   Feed
+          </Link>
+
+          <Link to="/Home/Opportunities" className="w-full flex items-center justify-start my-8 hover:font-serif m-1 p-1 text-orange-400 hover:bg-orange-400 hover:text-white rounded-lg">
+           <AutoStoriesTwoToneIcon/>Opportunities 
+          </Link>
+
+
         </div>
       </div>
     </aside>

@@ -9,6 +9,8 @@ import { Layout } from '../src/components/Layout/Layout';
 import LoginPage from './pages/authenticationpage/Login/Login';
 import SignupPage from './pages/authenticationpage/Signup/Signup';
 import { Library } from './pages/Library/Library';
+import Feed from './pages/Feed/Feed';
+import Opportunities from './pages/CollegeClacementFeed/Opportunities';
 
 const router = createBrowserRouter([
   {
@@ -30,6 +32,14 @@ const router = createBrowserRouter([
        {
     path: '/Home/Library',
     element:<Library/>
+  },
+  {
+    path: '/Home/Feed',
+    element:<Feed/>
+  },
+  {
+    path: '/Home/Opportunities',
+    element:<Opportunities/>
   },
     ],
   },
