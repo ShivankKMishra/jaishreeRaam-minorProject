@@ -3,13 +3,13 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState } from "recoil";
 import { getAuth } from "firebase/auth";
 import { getFirestore, collection, doc, addDoc, updateDoc, setDoc, getDoc } from "firebase/firestore"; // Import getDoc function
-
+import { useNavigate } from "react-router-dom";
 import { createDialogAtom } from "../../../utils/atom";
 
 function CreateClass({ isOpen, onClose }) {
   const auth = getAuth();
   const db = getFirestore();
-
+  const navigate = useNavigate();
   const [user] = useAuthState(auth);
   const [open, setOpen] = useState(false);
   const [className, setClassName] = useState("");
@@ -96,7 +96,8 @@ function CreateClass({ isOpen, onClose }) {
 
       // Handle success, close dialog, show message, etc.
       handleClose();
-      alert("Classroom created successfully!");
+      // alert("Classroom created successfully!");
+      navigate(0);
     } catch (err) {
       // Handle error
       alert(`Cannot create class - ${err.message}`);

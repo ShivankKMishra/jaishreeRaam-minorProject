@@ -14,10 +14,11 @@ export const Library = () => {
   const booksData2 = []; // Empty books data
 
   return (
-    <div className='flex flex'>
+    <div className='library'>
       <h1>Library</h1>
+      <div>
       <Books booksData={booksData1} />
-    
+    </div>
     </div>
   );
 };

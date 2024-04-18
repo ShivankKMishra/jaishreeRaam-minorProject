@@ -2,17 +2,17 @@
 
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection } from "firebase/firestore";
+import { getFirestore, collection, orderBy, onSnapshot } from "firebase/firestore";
 import { useState, useEffect } from "react";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyB2eLt__kkonGKGSwLo65aEsRuAxwtXNCw",
-  authDomain: "auth-devlopment-e4afb.firebaseapp.com",
-  projectId: "auth-devlopment-e4afb",
-  storageBucket: "auth-devlopment-e4afb.appspot.com",
-  messagingSenderId: "35097344393",
-  appId: "1:35097344393:web:7587017db6b2b908340958"
+  apiKey: "AIzaSyD_b1408OP4FpiYkyAyNz_lXRjwaVy2h98",
+  authDomain: "auth-devlopment-d7e31.firebaseapp.com",
+  projectId: "auth-devlopment-d7e31",
+  storageBucket: "auth-devlopment-d7e31.appspot.com",
+  messagingSenderId: "787757585356",
+  appId: "1:787757585356:web:6c5bc659a691151869c369"
 };
 
 // Initialize Firebase

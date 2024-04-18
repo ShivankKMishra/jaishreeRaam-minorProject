@@ -1,5 +1,7 @@
 import React from 'react'
 import PlacementFeed from './PlacementFeed/PlacementFeed'
+import WorkShop from './WorkShop/WorkShop'
+
 
 const Opportunities = () => {
   return (
@@ -8,6 +10,7 @@ const Opportunities = () => {
 
 
       <PlacementFeed />
+     <WorkShop/>
     </div>
   )
 }

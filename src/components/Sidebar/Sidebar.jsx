@@ -26,7 +26,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
             <LocalLibraryRoundedIcon /> Library
           </Link>
 
-          <Link to="/doubt-and-poll" className="w-full flex items-center justify-start my-8 hover:font-serif m-1 p-1 text-orange-400 hover:bg-orange-400 hover:text-white rounded-lg">
+          <Link to="/Home/Doubt&Poll" className="w-full flex items-center justify-start my-8 hover:font-serif m-1 p-1 text-orange-400 hover:bg-orange-400 hover:text-white rounded-lg">
             <PollRoundedIcon /> Doubt and Poll
           </Link>
 

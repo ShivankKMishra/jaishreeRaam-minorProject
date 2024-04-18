@@ -11,6 +11,7 @@ import SignupPage from './pages/authenticationpage/Signup/Signup';
 import { Library } from './pages/Library/Library';
 import Feed from './pages/Feed/Feed';
 import Opportunities from './pages/CollegeClacementFeed/Opportunities';
+import Chat from './pages/Doubt&Poll/Chat';
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
   {
     path: '/Home/Opportunities',
     element:<Opportunities/>
+  },
+  {
+    path: '/Home/Doubt&Poll',
+    element:<Chat/>
   },
     ],
   },

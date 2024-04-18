@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth, signInWithGoogle } from './../../../firebase'; // Import Firebase configuration and signInWithGoogle function
-// Your other imports...
+import classroomLogo from './logoimages/classroomlogo.png'; // Import your image file
+import collegelogo from './logoimages/collegelogo.png';
+import backgroundimg from './logoimages/backgroundimg.png';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -18,17 +20,6 @@ const LoginPage = () => {
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
-  };
-
-  const handleGoogleSignIn = async () => {
-    try {
-      setGoogleLoginClicked(true); // Set Google login button clicked
-      await signInWithGoogle(); // Sign in with Google
-      navigate('/Home'); // Redirect to home page after successful Google authentication
-    } catch (error) {
-      console.error('Error signing in with Google', error);
-      setError(error.message);
-    }
   };
 
   const handleSubmit = async (e) => {
@@ -58,12 +49,25 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
-        </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+    <div>
+    <div  className=' h-screen  border border-y-4' style={{backgroundColor:'#afd8d9'}}>
+    <img src={collegelogo} alt="college Logo" className="h-28 w-auto mr-4" />
+    <img src={backgroundimg} alt="backgroundimg" className=" w-auto mr-4" style={{height: '32rem',
+  position: 'absolute',
+  top: '12rem',
+  left: '14rem',
+  zIndex:'3' ,
+  transform: 'rotate(-11deg)',
+  borderBottomLeftRadius: '16rem'}} />
+   
+    <div className="fixed right-0 top-1/2 transform -translate-y-1/2 w-3/5 h-screen p-8 bg-white rounded-l-lg shadow-lg" style={{borderTopLeftRadius: '5rem', borderBottomLeftRadius: '5rem'}}>
+      <div className="container flex items-center rounded-lg" >
+        <img src={classroomLogo} alt="Classroom Logo" className="h-28 w-auto mr-4" /> {/* Adjust height as needed */}
+       
+      </div>
+      <div className="max-w-md w-full  mx-40 my-10">
+        <h2 className="text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
+        <form className="w-full my-11" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
               <label htmlFor="email" className="sr-only">Email address</label>
@@ -76,7 +80,7 @@ const LoginPage = () => {
           </div>
           {/* Display error message if there is one */}
           {error && <p className="text-red-500 text-sm">{error}</p>}
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mt-4">
             <div className="text-sm">
               <Link to="/SignupPage" className="font-medium text-indigo-600 hover:text-indigo-500">
                 Don't have an account? Sign up
@@ -94,13 +98,10 @@ const LoginPage = () => {
               </button>
             </div>
           </div>
-          <div>
-            <button type="button" onClick={handleGoogleSignIn} className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-              Sign in with Google
-            </button>
-          </div>
         </form>
       </div>
+    </div>
+    </div>
     </div>
   );
 };
