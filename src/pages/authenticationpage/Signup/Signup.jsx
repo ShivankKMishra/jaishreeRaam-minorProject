@@ -5,7 +5,7 @@ import { auth } from './../../../firebase';
 import classroomLogo from '../Login/logoimages/classroomlogo.png'; // Import your image file
 import collegelogo from '../Login/logoimages/collegelogo.png';
 import backgroundimg from '../Login/logoimages/backgroundimg.png';
-
+import { setUserToken } from '../../../utils/sessionStorage/sessionStorage';
 const SignupPage = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -54,6 +54,7 @@ const SignupPage = () => {
 
       // Proceed with creating a new user
       const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+     setUserToken(userCredential._tokenResponse.localId);
       console.log(userCredential);
       // Handle successful sign up, redirect user, etc.
       navigate('/Home');
