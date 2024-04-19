@@ -1,6 +1,12 @@
 import React from "react";
+import DeleteIcon from '@mui/icons-material/Delete';
+import deleteClass from '../../../class/DeleteClass/deleteClass'; // Import deleteClass function
 
-function Cards({ classes }) {
+function Cards({ classes, deleteClass, setClasses }) {
+  const handleDelete = (class_id, creatorUid) => {
+    deleteClass(class_id, creatorUid, classes, setClasses);
+  };
+
   return (
     <div className="grid grid-cols-3 gap-4 m-16">
       {classes.map((classData) => (
@@ -11,6 +17,11 @@ function Cards({ classes }) {
           <p>Year: {classData.year}</p>
           <p>Semester: {classData.semester}</p>
           <p>Section: {classData.section}</p>
+          <div>
+            <button onClick={() => handleDelete(classData.id, classData.creatorUid)}>
+              <DeleteIcon />
+            </button>
+          </div>
           {/* Add more details as needed */}
         </div>
       ))}
