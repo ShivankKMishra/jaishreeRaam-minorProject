@@ -1,9 +1,10 @@
-// src/main.jsx
+// main.jsx
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import { RecoilRoot } from 'recoil'; // Import RecoilRoot
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { ClassProvider } from './contexts/ClassesContext'; // Import ClassProvider
 import Home from '../src/pages/Home/Home';
 import { Layout } from '../src/components/Layout/Layout';
 import LoginPage from './pages/authenticationpage/Login/Login';
@@ -53,8 +54,10 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RecoilRoot> {/* Ensure RecoilRoot wraps your entire application */}
-      <RouterProvider router={router} />
+    <RecoilRoot>
+      <ClassProvider> {/* Wrap your application with ClassProvider */}
+        <RouterProvider router={router} />
+      </ClassProvider>
     </RecoilRoot>
   </React.StrictMode>
 );

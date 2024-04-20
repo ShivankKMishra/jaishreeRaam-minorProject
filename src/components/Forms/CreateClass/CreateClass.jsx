@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilState } from "recoil";
 import { getAuth } from "firebase/auth";
-import { getFirestore, collection, doc, addDoc, updateDoc, setDoc, getDoc } from "firebase/firestore"; // Import getDoc function
+import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { createDialogAtom } from "../../../utils/atom";
 
@@ -52,6 +52,7 @@ function CreateClass({ isOpen, onClose }) {
       const newClassRef = await addDoc(collection(db, "classes"), {
         creatorUid: user.uid,
         name: className,
+        enrolledUsers: [user.uid], // Include the creator's ID in the enrolledUsers array
         creatorName: user.displayName,
         creatorPhoto: user.photoURL,
         posts: [],
@@ -60,39 +61,6 @@ function CreateClass({ isOpen, onClose }) {
         semester,
         section,
       });
-
-      // Check if the user document exists
-      const userDocRef = doc(db, "users", user.uid);
-      const userDocSnapshot = await getDoc(userDocRef);
-
-      if (userDocSnapshot.exists()) {
-        // Update the current user's enrolledClassrooms array
-        const userData = userDocSnapshot.data();
-        let userClasses = [];
-        if (userData && userData.enrolledClassrooms) {
-          userClasses = [...userData.enrolledClassrooms];
-        }
-        userClasses.push({
-          id: newClassRef.id,
-          name: className,
-          creatorName: user.displayName,
-          creatorPhoto: user.photoURL,
-        });
-
-        await updateDoc(userDocRef, {
-          enrolledClassrooms: userClasses,
-        });
-      } else {
-        // Create the user document if it doesn't exist
-        await setDoc(userDocRef, {
-          enrolledClassrooms: [{
-            id: newClassRef.id,
-            name: className,
-            creatorName: user.displayName,
-            creatorPhoto: user.photoURL,
-          }],
-        });
-      }
 
       // Handle success, close dialog, show message, etc.
       handleClose();

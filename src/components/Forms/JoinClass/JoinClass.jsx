@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { getFirestore, doc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { getUserToken } from "../../../utils/sessionStorage/sessionStorage";
-import Home from '../../../pages/Home/Home';
-function JoinClass({ isOpen, onClose, updateClasses }) {
+import { useClassContext } from '../../../contexts/ClassesContext'; // Import useClassContext
+
+function JoinClass({ isOpen, onClose }) {
   const db = getFirestore();
   const [classId, setClassId] = useState('');
   const userToken = getUserToken();
+  const { updateClasses } = useClassContext(); // Access updateClasses from context
 
   const handleInputChange = (event) => {
     setClassId(event.target.value);
