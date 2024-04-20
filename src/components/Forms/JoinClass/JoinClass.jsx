@@ -1,20 +1,32 @@
-// src/components/Forms/JoinClass/JoinClass.jsx
 import React, { useState } from 'react';
-
-function JoinClass({ isOpen, onClose }) {
-  const [classCode, setClassCode] = useState('');
+import { getFirestore, doc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { getUserToken } from "../../../utils/sessionStorage/sessionStorage";
+import Home from '../../../pages/Home/Home';
+function JoinClass({ isOpen, onClose, updateClasses }) {
+  const db = getFirestore();
+  const [classId, setClassId] = useState('');
+  const userToken = getUserToken();
 
   const handleInputChange = (event) => {
-    setClassCode(event.target.value);
+    setClassId(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Here, you can handle the form submission logic
-    // For now, let's just log the class code
-    console.log('Class Code:', classCode);
-    // You can also close the popup after form submission
-    onClose();
+    try {
+      // Update the enrolledUsers array in the class document with the user's ID
+      const classRef = doc(db, 'classes', classId);
+      await updateDoc(classRef, {
+        enrolledUsers: arrayUnion(userToken)
+      });
+      // Call the updateClasses function to refresh the classes on the home page
+      updateClasses();
+      // Optionally, you can perform additional actions after the user joins the class
+      console.log('Successfully joined class:', classId);
+      onClose();
+    } catch (error) {
+      console.error('Error joining class:', error);
+    }
   };
 
   return (
@@ -25,17 +37,17 @@ function JoinClass({ isOpen, onClose }) {
             <h2 className="text-2xl mb-4">Join a Class</h2>
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
-                <label htmlFor="classCode" className="block text-sm font-medium text-gray-700">
-                  Class Code
+                <label htmlFor="classId" className="block text-sm font-medium text-gray-700">
+                  Class ID
                 </label>
                 <input
                   type="text"
-                  id="classCode"
-                  name="classCode"
-                  value={classCode}
+                  id="classId"
+                  name="classId"
+                  value={classId}
                   onChange={handleInputChange}
                   className="mt-1 block w-full border p-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  placeholder="Enter class code or Link"
+                  placeholder="Enter class ID"
                   required
                 />
               </div>

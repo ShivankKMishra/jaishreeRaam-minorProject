@@ -3,24 +3,31 @@ import { getFirestore, collection, getDocs } from "firebase/firestore";
 import Cards from "./Cards/Cards";
 import { isAuthenticated } from "../../utils/sessionStorage/sessionStorage"; // Import isAuthenticated function
 import deleteClass from "../../class/DeleteClass/deleteClass"; // Import the deleteClass function
+import { getUserToken } from "../../utils/sessionStorage/sessionStorage";
 
 function Home() {
   const db = getFirestore();
   const [classes, setClasses] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const classSnapshot = await getDocs(collection(db, "classes"));
-        const classData = classSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-        setClasses(classData);
-      } catch (error) {
-        console.error("Error fetching classes:", error);
-      }
-    };
+  const userToken = getUserToken();
 
-    fetchData();
-  }, [db]);
+ useEffect(() => {
+  const fetchData = async () => {
+    try {
+      // Fetch classes where enrolledUsers array contains the current user's ID
+      const classSnapshot = await getDocs(collection(db, "classes"));
+      const classData = classSnapshot.docs
+        .filter(doc => doc.data().enrolledUsers && doc.data().enrolledUsers.includes(userToken))
+        .map(doc => ({ id: doc.id, ...doc.data() }));
+      setClasses(classData);
+    } catch (error) {
+      console.error("Error fetching classes:", error);
+    }
+  };
+
+  fetchData();
+}, [db, userToken]);
+
 
   // Protect the route by redirecting if the user is not authenticated
   useEffect(() => {
