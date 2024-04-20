@@ -1,7 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import DeleteIcon from '@mui/icons-material/Delete';
-import deleteClass from '../../../class/DeleteClass/deleteClass'; // Import deleteClass function
-
+import CoPresentIcon from '@mui/icons-material/CoPresent';
 function Cards({ classes, deleteClass, setClasses }) {
   const handleDelete = (class_id, creatorUid) => {
     deleteClass(class_id, creatorUid, classes, setClasses);
@@ -18,9 +18,21 @@ function Cards({ classes, deleteClass, setClasses }) {
           <p>Semester: {classData.semester}</p>
           <p>Section: {classData.section}</p>
           <div>
-            <button onClick={() => handleDelete(classData.id, classData.creatorUid)}>
+
+            <Link to={`/Home/ClassRoom/${classData.id}`} >
+            <button className=" text-white m-1 bg-slate-700 border  rounded-full border-slate-700 p-1">
+              <CoPresentIcon/>
+            </button>
+            </Link>
+
+            
+            
+            <button className=" text-white m-1 bg-slate-700 border  rounded-full border-slate-700 p-1" onClick={() => handleDelete(classData.id, classData.creatorUid)}>
               <DeleteIcon />
             </button>
+
+            
+          
           </div>
           {/* Add more details as needed */}
         </div>

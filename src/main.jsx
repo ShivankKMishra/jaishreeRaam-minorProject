@@ -13,6 +13,7 @@ import { Library } from './pages/Library/Library';
 import Feed from './pages/Feed/Feed';
 import Opportunities from './pages/CollegeClacementFeed/Opportunities';
 import Chat from './pages/Doubt&Poll/Chat';
+import ClassRoom from './pages/ClassRoom/ClassRoom';
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
   {
     path: '/Home/Doubt&Poll',
     element:<Chat/>
+  },
+  {
+     path: '/Home/ClassRoom/:id',
+    element:<ClassRoom/>
   },
     ],
   },
