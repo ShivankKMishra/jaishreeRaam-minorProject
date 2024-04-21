@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../Header/Header';
 import Sidebar from '../Sidebar/Sidebar';
 import { Outlet } from 'react-router-dom';
@@ -10,21 +10,21 @@ export const Layout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isJoinClassOpen, setIsJoinClassOpen] = useState(false);
 
+  // Function to toggle the sidebar
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  // Function to toggle the JoinClass component
   const toggleJoinClass = () => {
-  console.log('Before setIsSidebarOpen:', isSidebarOpen);
-  // Close the sidebar only if it's currently open
-  if (isSidebarOpen) {
-    setIsSidebarOpen(!isSidebarOpen);
-  }
-  console.log('After setIsSidebarOpen:', isSidebarOpen);
-  // Toggle the JoinClass component
-  setIsJoinClassOpen(!isJoinClassOpen);
-};
+    setIsJoinClassOpen(!isJoinClassOpen);
+  };
 
+  // Close the sidebar initially for smaller displays
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 768px)'); // Adjust the max-width according to your preference
+    setIsSidebarOpen(!mediaQuery.matches); // Close the sidebar if the screen width is less than or equal to 768px
+  }, []);
 
   return (
     <>

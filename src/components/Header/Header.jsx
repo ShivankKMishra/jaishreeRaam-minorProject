@@ -57,8 +57,9 @@ function Header({ toggleSidebar, toggleCreateClass, toggleJoinClass }) {
               onClick={toggleSidebar}
               className="text-xl border border-orange-400 rounded-3x text-black hover:bg-orange-400 hover:text-white rounded-3xl p-1  pr-4 focus:outline-none mx-3"
             >
-              <FiberSmartRecordRoundedIcon />
+              <FiberSmartRecordRoundedIcon />menu
             </button>
+            
           </div>
         </div>
       </header>
