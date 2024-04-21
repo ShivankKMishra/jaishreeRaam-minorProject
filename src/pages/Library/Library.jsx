@@ -4,10 +4,10 @@ import Books from './Books/Books';
 export const Library = () => {
   // Example data for demonstration
   const booksData1 = [
-    { title: 'Book1', path: '/book/book1.pdf' },
-    { title: 'Book2', path: '/book/CV.pdf' },
-    { title: 'computerScience', path: '/book/ComputerScienceOne.pdf' },
-    { title: 'computing', path: '/book/FullText.pdf' }
+    { title: 'Book1', path: '/book1.pdf' },
+    { title: 'Book2', path: '/CV.pdf' },
+    { title: 'computerScience', path: '/ComputerScienceOne.pdf' },
+    { title: 'computing', path: '/FullText.pdf' }
   ];
 
   const booksData2 = []; // Empty books data
