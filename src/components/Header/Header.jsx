@@ -51,7 +51,7 @@ function Header({ toggleSidebar, toggleCreateClass, toggleJoinClass }) {
               onClose={handleClose}
             >
               <MenuItem onClick={toggleCreateClassPopup}>Create Class</MenuItem> {/* Toggle the CreateClass popup */}
-              <MenuItem onClick={toggleJoinClass}>Join Class</MenuItem> {/* Toggle the JoinClass popup */}
+              <MenuItem onClick={toggleJoinClass} >Join Class</MenuItem> {/* Toggle the JoinClass popup */}
             </Menu>
             <button
               onClick={toggleSidebar}

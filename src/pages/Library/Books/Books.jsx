@@ -11,15 +11,17 @@ const Books = ({ booksData }) => {
 
   return (
     <>
-      <div className='grid grid-cols-4 gap-4'>
+      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
         {booksData && booksData.length > 0 ? (
           booksData.map((book, index) => (
             <div
-              className='bg-gray-300 rounded-xl flex items-center justify-center cursor-pointer'
+              className='bg-gray-300 rounded-xl cursor-pointer overflow-hidden'
               key={index}
               onClick={() => handleCardClick(book)}
             >
-              <h3 className='text-center'>{book.title}</h3>
+              <div className="p-4 h-full flex flex-col justify-between">
+                <h3 className='text-center text-lg'>{book.title}</h3>
+              </div>
             </div>
           ))
         ) : (
@@ -28,14 +30,14 @@ const Books = ({ booksData }) => {
       </div>
       {isPopupOpen && selectedBook && (
         <div className='fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-10'>
-          <div className='bg-white p-4 rounded-lg'>
+          <div className='bg-white p-4 rounded-lg w-full h-full md:max-w-lg'>
             <button
               className='absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full'
               onClick={() => setIsPopupOpen(false)}
             >
               X
             </button>
-            <iframe src={selectedBook.path} className='w-screen h-screen' />
+            <iframe src={selectedBook.path} className='w-full h-full' />
           </div>
         </div>
       )}
