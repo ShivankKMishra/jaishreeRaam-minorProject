@@ -14,6 +14,7 @@ import Feed from './pages/Feed/Feed';
 import Opportunities from './pages/CollegeClacementFeed/Opportunities';
 import Chat from './pages/Doubt&Poll/Chat';
 import ClassRoom from './pages/ClassRoom/ClassRoom';
+import Attendence from './pages/Attendence/Attendence';
 
 const router = createBrowserRouter([
   {
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
   {
      path: '/Home/ClassRoom/:id',
     element:<ClassRoom/>
+  },
+   {
+     path: '/Home/Attendence',
+    element:<Attendence />
   },
     ],
   },

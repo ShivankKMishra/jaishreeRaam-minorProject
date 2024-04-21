@@ -1,22 +1,27 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { createUserWithEmailAndPassword, fetchSignInMethodsForEmail } from "firebase/auth";
+import { createUserWithEmailAndPassword, fetchSignInMethodsForEmail } from 'firebase/auth';
 import { auth } from './../../../firebase';
 import { setUserToken } from '../../../utils/sessionStorage/sessionStorage';
-import classroomLogo from '../Login/logoimages/classroomlogo.png';
-import collegelogo from '../Login/logoimages/collegelogo.png';
-import backgroundImg from '../Login/logoimages/backgroundimg.png';
+import { getFirestore, collection, doc, setDoc } from "firebase/firestore"; // Import 'doc' from Firestore
+import '../CSS/authentication.css';
+import classroomLogo from '../CSS/logoimages/classroomlogo.png';
+import collegeLogo from '../CSS/logoimages/collegelogo.png';
+import backgroundImg from '../CSS/logoimages/backgroundimg.png';
 
 const SignupPage = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
-    password: ''
+    password: '',
+    fullName: ''
   });
   const [errors, setErrors] = useState({
     email: '',
-    password: ''
+    password: '',
+    fullName: ''
   });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,6 +44,7 @@ const SignupPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       // Check if the user already exists
@@ -50,17 +56,31 @@ const SignupPage = () => {
           ...errors,
           email: 'This email is already registered'
         });
-        return; // Exit function
+        setLoading(false);
+        return;
       }
 
       // Proceed with creating a new user
       const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
-      setUserToken(userCredential._tokenResponse.localId);
-    
-      // Handle successful sign up, redirect user, etc.
+      
+      // Initialize Firestore
+      const db = getFirestore();
+
+      // Update Firestore collection
+      const userToken = userCredential._tokenResponse.localId;
+      await setDoc(doc(db, 'users', userToken), { // Specify the document reference using 'doc'
+        name: formData.fullName,
+        enrolledclassrooms: []
+      });
+
+      // Save user's authentication token to session storage
+      setUserToken(userToken);
+
+      // Redirect to Home page
       navigate('/Home');
     } catch (error) {
-      console.error(error);
+      console.error('Error signing up with email and password', error);
+      setLoading(false);
       // Handle errors, display error messages, etc.
     }
   };
@@ -68,12 +88,27 @@ const SignupPage = () => {
   return (
     <div className="container">
       <img src={classroomLogo} alt="Classroom Logo" className="logo" />
-      <img src={backgroundImg} alt="backgroundimg" className="backgroundimg w-96  max-2xl:relative max-2xl:left-96" />
+      <img src={backgroundImg} alt="backgroundImg" className="backgroundImg w-96" />
       <div className="form-container">
-        <img src={collegelogo} alt="College Logo" />
+        <img src={collegeLogo} alt="College Logo" />
         <img src={classroomLogo} alt="Classroom Logo" className="classroomlogo" />
         <h2 className="text-center">Create an account</h2>
         <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="fullName">Full Name</label>
+            <input 
+              id="fullName" 
+              name="fullName" 
+              type="text" 
+              autoComplete="name" 
+              required 
+              value={formData.fullName} 
+              onChange={handleChange} 
+              placeholder="Full Name" 
+              className={`input-field ${errors.fullName ? 'error' : ''}`} 
+            />
+            {errors.fullName && <p className="error-message">{errors.fullName}</p>}
+          </div>
           <div className="form-group">
             <label htmlFor="email">Email address</label>
             <input 
@@ -104,15 +139,16 @@ const SignupPage = () => {
             />
             {errors.password && <p className="error-message">{errors.password}</p>}
           </div>
-         <div className="link">
+          <div className="link">
             <p>Already have an account? <Link to="/" className="text-indigo-600 hover:text-indigo-500 font-medium">Sign in here</Link></p>
           </div>
           <div className="text-center">
             <button 
               type="submit" 
-              className="btn btn-primary bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              disabled={loading}
             >
-              Sign up
+              {loading ? 'Signing up...' : 'Sign up'}
             </button>
           </div>
         </form>

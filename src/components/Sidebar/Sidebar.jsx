@@ -29,7 +29,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
             <PollRoundedIcon className="sm:hidden" />
           </Link>
 
-          <Link to="/attendance" className="w-full flex items-center justify-start my-8 hover:font-serif m-1 p-1 text-orange-400 hover:bg-orange-400 hover:text-white rounded-lg">
+          <Link to="/Home/Attendence" className="w-full flex items-center justify-start my-8 hover:font-serif m-1 p-1 text-orange-400 hover:bg-orange-400 hover:text-white rounded-lg">
             <span className="hidden sm:inline-block">Attendance</span>
             <ChecklistRtlRoundedIcon className="sm:hidden" />
           </Link>
