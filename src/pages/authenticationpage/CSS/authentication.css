@@ -1,0 +1,106 @@
+/* loginStyles.css */
+
+/* Common styles */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  position: relative;
+  height: 100vh;
+  background-image: url('backgroundImg');
+  background-size: cover;
+  background-position: center;
+}
+
+.logo {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 150px; /* Adjust size as needed */
+}
+
+.form-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 90%;
+}
+
+.form-container img {
+  width: 100px; /* Adjust size as needed */
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.error-message {
+  color: red;
+  margin-bottom: 20px;
+}
+.classroomlogo{
+    display: none;
+}
+.link {
+  text-align: center;
+}
+.backgroundImg{
+    display: flex;
+    
+    position: relative;
+    z-index: 2;
+    top:1rem;
+    left: 45rem;
+    transform: rotate(10deg);
+}
+/* Media queries for responsiveness */
+@media screen and (max-width: 768px) {
+  
+
+  .logo {
+    display: none;
+  }
+  .classroomlogo{
+    display:unset;
+    position: absolute;
+    left: 8rem;
+    top:1rem;
+}
+
+.backgroundImg{
+    
+    
+    position: fixed;
+    z-index: -1;
+    top:1rem;
+    left: 10rem;
+    transform: rotate(10deg);
+    
+}
+  .form-container {
+    width: 90%;
+  }
+}
+
