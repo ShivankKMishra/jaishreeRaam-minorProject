@@ -10,23 +10,18 @@ const Feed = () => {
 
   const fetchTechNews = async () => {
     try {
-      const response = await fetch(`https://newsapi.org/v2/everything?q=technology&sortBy=popularity&apiKey=7c93013714e2485593397bb64dad05b2`);
+      const response = await fetch('https://news-api14.p.rapidapi.com/top-headlines?country=us&language=en&pageSize=10&category=technology', {
+        method: 'GET',
+        headers: {
+          'X-RapidAPI-Key': '962c8b39c9msh3d946acc5506494p1dfad4jsn64a9babf2c67',
+          'X-RapidAPI-Host': 'news-api14.p.rapidapi.com'
+        }
+      });
       if (!response.ok) {
         throw new Error('Failed to fetch tech news');
       }
       const data = await response.json();
-
-      // Check if articles array exists in data
-      if (data.articles) {
-        // Filter out only tech news articles
-        const filteredTechNews = data.articles.filter(article =>
-          article.title.toLowerCase().includes('tech') ||
-          article.description.toLowerCase().includes('tech')
-        );
-        setTechNews(filteredTechNews);
-      } else {
-        throw new Error('Articles not found in response');
-      }
+      setTechNews(data.articles);
     } catch (error) {
       console.error('Error fetching tech news:', error.message);
     }
