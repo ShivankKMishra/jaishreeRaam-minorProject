@@ -15,6 +15,7 @@ import Opportunities from './pages/CollegeClacementFeed/Opportunities';
 import Chat from './pages/Doubt&Poll/Chat';
 import ClassRoom from './pages/ClassRoom/ClassRoom';
 import Attendence from './pages/Attendence/Attendence';
+import RgpvCalender from './pages/RgpvCalender/RgpvCalender';
 
 const router = createBrowserRouter([
   {
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
    {
      path: '/Home/Attendence',
     element:<Attendence />
+  },
+  {
+     path: '/Home/RgpvCalender',
+    element:<RgpvCalender />
   },
     ],
   },
