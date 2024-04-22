@@ -9,6 +9,7 @@ const ClassRoom = () => {
   const [isCreator, setIsCreator] = useState(false); // State to track if the current user is the creator
   const [announcementText, setAnnouncementText] = useState(""); // State to store the announcement text
   const [announcements, setAnnouncements] = useState([]); // State to store announcements
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false); // State to control the visibility of the success dialog
   const userToken = getUserToken(); // Get the user token
 
   useEffect(() => {
@@ -47,9 +48,23 @@ const ClassRoom = () => {
     }
   };
 
+  const handleCopyClassID = () => {
+    navigator.clipboard.writeText(id); // Copy class ID to clipboard
+    setShowSuccessDialog(true); // Show success dialog
+    console.log("Class ID copied to clipboard:", id);
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-4">Class: {className}</h1>
+      <h1 className="text-3xl font-bold mb-4">
+        Class: {className}
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 ml-2 rounded"
+          onClick={handleCopyClassID}
+        >
+          Copy ID
+        </button>
+      </h1>
       
       {/* Display announcement section only if the user is the creator */}
       {isCreator && (
@@ -80,6 +95,21 @@ const ClassRoom = () => {
           ))}
         </ul>
       </div>
+
+      {/* Success dialog */}
+      {showSuccessDialog && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="bg-white border border-gray-300 shadow-md rounded-md p-4">
+            <p className="text-green-500 font-bold">Class ID copied to clipboard!</p>
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-2 rounded"
+              onClick={() => setShowSuccessDialog(false)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -9,6 +9,7 @@ function AttendanceComponent() {
   const [selectedClass, setSelectedClass] = useState(null);
   const [enrolledUsers, setEnrolledUsers] = useState([]);
   const [usersData, setUsersData] = useState({});
+  const [attendanceData, setAttendanceData] = useState({});
   const userToken = getUserToken();
   const db = getFirestore();
 
@@ -37,6 +38,23 @@ function AttendanceComponent() {
       fetchUserData();
     }
   }, [enrolledUsers, usersData, db]);
+
+  useEffect(() => {
+    const fetchAttendanceData = async () => {
+      if (selectedClass) {
+        const classDocRef = doc(db, "classes", selectedClass.id);
+        const classDocSnap = await getDoc(classDocRef);
+        if (classDocSnap.exists()) {
+          const classData = classDocSnap.data();
+          setAttendanceData(classData.attendance || {});
+        } else {
+          console.error("Class document does not exist");
+        }
+      }
+    };
+
+    fetchAttendanceData();
+  }, [selectedClass, db]);
 
   const handleClassSelect = async (classItem) => {
     setSelectedClass(classItem);
@@ -123,10 +141,36 @@ function AttendanceComponent() {
                   />
                   <span>Absent</span>
                 </label>
-                <span>{usersData[userId]}</span>
+                <span className="ml-5">{usersData[userId]}</span>
               </li>
             ))}
           </ul>
+        </div>
+      )}
+
+      {selectedClass && (
+        <div>
+          <h3 className="text-xl font-bold mb-2">Attendance Table for {selectedClass.name}</h3>
+          <table className="border-collapse border border-gray-400">
+            <thead>
+              <tr>
+                <th className="border border-gray-400 p-2">Name</th>
+                <th className="border border-gray-400 p-2">Date</th>
+                <th className="border border-gray-400 p-2">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.entries(attendanceData).map(([userId, userAttendance]) => (
+                Object.entries(userAttendance).map(([date, status]) => (
+                  <tr key={`${userId}-${date}`}>
+                    <td className="border border-gray-400 p-2">{usersData[userId]}</td>
+                    <td className="border border-gray-400 p-2">{date}</td>
+                    <td className="border border-gray-400 p-2">{status}</td>
+                  </tr>
+                ))
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
     </div>
