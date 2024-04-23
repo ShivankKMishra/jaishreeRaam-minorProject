@@ -1,10 +1,10 @@
-// main.jsx
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import { RecoilRoot } from 'recoil'; // Import RecoilRoot
+import { RecoilRoot } from 'recoil';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { ClassProvider } from './contexts/ClassesContext'; // Import ClassProvider
+import { ClassProvider } from './contexts/ClassesContext';
+import { AnnouncementProvider } from './contexts//AnnouncementContext'; // Import AnnouncementProvider
 import Home from '../src/pages/Home/Home';
 import { Layout } from '../src/components/Layout/Layout';
 import LoginPage from './pages/authenticationpage/Login/Login';
@@ -35,43 +35,44 @@ const router = createBrowserRouter([
         element: <Home />,
       },
        {
-    path: '/Home/Library',
-    element:<Library/>
-  },
-  {
-    path: '/Home/Feed',
-    element:<Feed/>
-  },
-  {
-    path: '/Home/Opportunities',
-    element:<Opportunities/>
-  },
-  {
-    path: '/Home/Doubt&Poll',
-    element:<Chat/>
-  },
-  {
-     path: '/Home/ClassRoom/:id',
-    element:<ClassRoom/>
-  },
-   {
-     path: '/Home/Attendence',
-    element:<Attendence />
-  },
-  {
-     path: '/Home/RgpvCalender',
-    element:<RgpvCalender />
-  },
+        path: '/Home/Library',
+        element:<Library/>
+      },
+      {
+        path: '/Home/Feed',
+        element:<Feed/>
+      },
+      {
+        path: '/Home/Opportunities',
+        element:<Opportunities/>
+      },
+      {
+        path: '/Home/Doubt&Poll',
+        element:<Chat/>
+      },
+      {
+        path: '/Home/ClassRoom/:id',
+        element:<ClassRoom/>
+      },
+      {
+        path: '/Home/Attendence',
+        element:<Attendence />
+      },
+      {
+        path: '/Home/RgpvCalender',
+        element:<RgpvCalender />
+      },
     ],
   },
-  
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <RecoilRoot>
-      <ClassProvider> {/* Wrap your application with ClassProvider */}
-        <RouterProvider router={router} />
+      <ClassProvider>
+        <AnnouncementProvider> {/* Wrap your application with AnnouncementProvider */}
+          <RouterProvider router={router} />
+        </AnnouncementProvider>
       </ClassProvider>
     </RecoilRoot>
   </React.StrictMode>

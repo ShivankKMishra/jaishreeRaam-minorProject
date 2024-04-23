@@ -3,9 +3,11 @@ import { useParams } from "react-router-dom";
 import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 import { getUserToken } from "../../utils/sessionStorage/sessionStorage";
 import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage";
+import { useAnnouncementContext } from "../../contexts/AnnouncementContext";
 
 const ClassRoom = () => {
   const { id } = useParams();
+  const { refreshAnnouncements } = useAnnouncementContext();
   const [className, setClassName] = useState("");
   const [isCreator, setIsCreator] = useState(false);
   const [announcementText, setAnnouncementText] = useState("");
@@ -13,6 +15,7 @@ const ClassRoom = () => {
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
   const [fileInputKey, setFileInputKey] = useState(0);
   const [fileLocation, setFileLocation] = useState(null);
+  const [refreshedAnnouncements, setRefreshedAnnouncements] = useState([]); // Define refreshedAnnouncements state
   const userToken = getUserToken();
 
   useEffect(() => {
@@ -37,6 +40,12 @@ const ClassRoom = () => {
     fetchData();
   }, [id, userToken]);
 
+  // Effect for refreshing announcements
+  useEffect(() => {
+    // This effect will only run when 'refreshAnnouncements' is called
+    setAnnouncements(refreshedAnnouncements);
+  }, [refreshedAnnouncements]); // Add 'refreshedAnnouncements' as a dependency
+
   const handleAnnouncement = async () => {
     try {
       const db = getFirestore();
@@ -59,6 +68,9 @@ const ClassRoom = () => {
       console.log("Announcement posted successfully");
       setAnnouncementText("");
       setFileLocation(null);
+      setRefreshedAnnouncements(updatedAnnouncements); // Update refreshedAnnouncements instead of calling refreshAnnouncements
+
+      setShowSuccessDialog(true);
     } catch (error) {
       console.error("Error posting announcement:", error);
     }
