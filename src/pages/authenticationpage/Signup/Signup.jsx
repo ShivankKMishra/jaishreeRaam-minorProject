@@ -24,15 +24,23 @@ const SignupPage = () => {
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
+  const { name, value } = e.target;
+  setFormData({
+    ...formData,
+    [name]: value
+  });
+  if (value.trim() === '') {
+    setErrors({
+      ...errors,
+      [name]: `${name.charAt(0).toUpperCase() + name.slice(1)} is required`
     });
-    if (value.trim() === '') {
+  } else if (name === 'password') {
+    // Check password strength
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
+    if (!passwordRegex.test(value)) {
       setErrors({
         ...errors,
-        [name]: `${name.charAt(0).toUpperCase() + name.slice(1)} is required`
+        [name]: 'Password must contain at least 8 characters, including at least one uppercase letter, one lowercase letter, one number, and one special character'
       });
     } else {
       setErrors({
@@ -40,7 +48,13 @@ const SignupPage = () => {
         [name]: ''
       });
     }
-  };
+  } else {
+    setErrors({
+      ...errors,
+      [name]: ''
+    });
+  }
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -138,6 +152,7 @@ const SignupPage = () => {
               className={`input-field ${errors.password ? 'error' : ''}`} 
             />
             {errors.password && <p className="error-message">{errors.password}</p>}
+             
           </div>
           <div className="link">
             <p>Already have an account? <Link to="/" className="text-indigo-600 hover:text-indigo-500 font-medium">Sign in here</Link></p>
