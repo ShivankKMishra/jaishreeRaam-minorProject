@@ -65,14 +65,14 @@ export default function App() {
   };
 
   return (
-    <div className="App">
+    <div className="flex flex-col items-center justify-center h-screen">
       {!showVideo && (
-        <div className="center border rounded-xl hover:text-orange-600 w-36 flex justify-around ">
+        <div className="center border rounded-xl hover:text-orange-600 w-36 flex justify-around">
           <button onClick={handleStartMeeting}>Start Meeting</button>
         </div>
       )}
       {showVideo && (
-        <div className="myCallContainer" style={{ width: '50rem', height: '40rem', overflow: 'hidden' }}></div>
+        <div className="myCallContainer w-full sm:w-3/4 lg:w-1/2 h-3/4 md:h-2/3 lg:h-2/3 xl:h-1/2 overflow-hidden"></div>
       )}
     </div>
   );
