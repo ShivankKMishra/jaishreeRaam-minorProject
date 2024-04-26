@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 import { getUserToken } from "../../utils/sessionStorage/sessionStorage";
 import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage";
@@ -14,7 +14,7 @@ const ClassRoom = () => {
   const [announcementText, setAnnouncementText] = useState("");
   const [announcements, setAnnouncements] = useState([]);
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
-  const [showAnnouncementSuccessDialog, setShowAnnouncementSuccessDialog] = useState(false); // New state variable
+  const [showAnnouncementSuccessDialog, setShowAnnouncementSuccessDialog] = useState(false);
   const [fileInputKey, setFileInputKey] = useState(0);
   const [fileLocation, setFileLocation] = useState(null);
   const [userToken, setUserToken] = useState(null);
@@ -50,7 +50,7 @@ const ClassRoom = () => {
     try {
       setLoading(true);
       setShowSuccessDialog(false);
-      setShowAnnouncementSuccessDialog(false); // Reset announcement success dialog state
+      setShowAnnouncementSuccessDialog(false);
       const db = getFirestore();
       const classRef = doc(db, "classes", id);
 
@@ -81,7 +81,7 @@ const ClassRoom = () => {
       setAnnouncementText("");
       setFileLocation(null);
       setAnnouncements(updatedAnnouncements);
-      setShowAnnouncementSuccessDialog(true); // Show announcement success dialog
+      setShowAnnouncementSuccessDialog(true);
       setLoading(false);
     } catch (error) {
       console.error("Error posting announcement:", error);
@@ -123,6 +123,17 @@ const ClassRoom = () => {
             >
               Copy ID
             </button>
+            {isCreator && (
+              <Link
+                to={{
+                  pathname: "/Home/ClassRoom/${id}/VideoChat",
+                  state: { id }
+                }}
+                className="w-10rem text-xl border rounded-xl p-1 m-2 text-orange-400 hover:bg-orange-400 hover:text-white rounded-lg"
+              >
+                <span className="hidden sm:inline-block">Create Meet</span>
+              </Link>
+            )}
           </h1>
           
           {isCreator && (
@@ -165,7 +176,7 @@ const ClassRoom = () => {
             </ul>
           </div>
 
-          {showAnnouncementSuccessDialog && ( // Render announcement success dialog
+          {showAnnouncementSuccessDialog && (
             <div className="fixed inset-0 flex items-center justify-center z-50">
               <div className="bg-white border border-gray-300 shadow-md rounded-md p-4">
                 <p className="text-green-500 font-bold text-sm sm:text-base">Announcement posted successfully!</p>
@@ -196,6 +207,6 @@ const ClassRoom = () => {
       )}
     </div>
   );
-};
+}; 
 
 export default ClassRoom;

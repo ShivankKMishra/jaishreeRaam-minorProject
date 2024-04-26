@@ -1,0 +1,11 @@
+/* Increase specificity */
+div.myCallContainer .LW7EjqPdWOz2byf1EuLg {
+  /* Your custom styles here */
+}
+
+/* Using !important */
+.LW7EjqPdWOz2byf1EuLg {
+  /* Your custom styles here */
+  width: 100% !important; /* Example */
+  height: auto !important; /* Example */
+}

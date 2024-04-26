@@ -16,7 +16,7 @@ import Chat from './pages/Doubt&Poll/Chat';
 import ClassRoom from './pages/ClassRoom/ClassRoom';
 import Attendence from './pages/Attendence/Attendence';
 import RgpvCalender from './pages/RgpvCalender/RgpvCalender';
-
+import VideoChat from './pages/ClassRoom/VideoChat/VideoChat';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -61,6 +61,10 @@ const router = createBrowserRouter([
       {
         path: '/Home/RgpvCalender',
         element:<RgpvCalender />
+      },
+      {
+        path: '/Home/ClassRoom/:id/VideoChat',
+        element:<VideoChat />
       },
     ],
   },
