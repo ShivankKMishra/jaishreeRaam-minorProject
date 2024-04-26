@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
+import { getDatabase, ref, set } from "firebase/database";
 import "./VideoChat.css";
+import { useParams } from "react-router-dom"; // Import useParams
 
 function randomID(len) {
   let result = '';
@@ -22,9 +24,18 @@ export function getUrlParams(
   return new URLSearchParams(urlStr);
 }
 
-export default function App() {
+export default function VideoChat() {
   const [roomID, setRoomID] = useState(getUrlParams().get('roomID') || randomID(5));
   const [showVideo, setShowVideo] = useState(false);
+  
+  // Get the id parameter from the URL
+  const { id } = useParams();
+  // Log the id parameter
+  console.log("Class ID passed to VideoChat component:", id);
+
+  useEffect(() => {
+    console.log("Room ID on load:", roomID);
+  }, []); // Empty dependency array means this effect runs only once after component mount
 
   useEffect(() => {
     const myMeeting = async (element) => {
@@ -52,6 +63,9 @@ export default function App() {
           mode: ZegoUIKitPrebuilt.VideoConference,
         },
       });
+
+      // Store room ID in the Firebase Realtime Database along with the class ID
+      storeRoomIDInDatabase(id, roomID);
     };
 
     const container = document.querySelector('.myCallContainer');
@@ -63,6 +77,26 @@ export default function App() {
   const handleStartMeeting = () => {
     setShowVideo(true);
   };
+
+  // Function to store room ID in the database along with the class ID
+  const storeRoomIDInDatabase = (classID, roomID) => {
+  // Get a reference to the database
+  const db = getDatabase();
+
+  // Reference to the location where room ID will be stored nested under the class ID
+  const classRoomRef = ref(db, `classRooms/${classID}`);
+
+  // Set the room ID under the class ID in the database
+  set(classRoomRef, {
+    roomID: roomID
+  })
+  .then(() => {
+    console.log("Room ID stored under the class ID in the database successfully");
+  })
+  .catch((error) => {
+    console.error("Error storing Room ID under the class ID:", error);
+  });
+};
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">

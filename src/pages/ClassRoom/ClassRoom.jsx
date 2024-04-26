@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 import { getUserToken } from "../../utils/sessionStorage/sessionStorage";
-import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import { useAnnouncementContext } from "../../contexts/AnnouncementContext";
 import VideoCallIcon from '@mui/icons-material/VideoCall';
+import { isAuthenticated } from "../../utils/sessionStorage/sessionStorage";
+import { getDatabase, ref, get } from "firebase/database"; // Import get from Firebase Realtime Database
+
 const ClassRoom = () => {
   const { id } = useParams();
   const { refreshAnnouncements } = useAnnouncementContext();
@@ -18,6 +20,7 @@ const ClassRoom = () => {
   const [fileInputKey, setFileInputKey] = useState(0);
   const [fileLocation, setFileLocation] = useState(null);
   const [userToken, setUserToken] = useState(null);
+  const [roomID, setRoomID] = useState("");
 
   useEffect(() => {
     setUserToken(getUserToken());
@@ -29,11 +32,26 @@ const ClassRoom = () => {
         const db = getFirestore();
         const classRef = doc(db, "classes", id);
         const classSnap = await getDoc(classRef);
+
         if (classSnap.exists()) {
           const classData = classSnap.data();
           setClassName(classData.name);
           setIsCreator(classData.creatorUid === userToken);
           setAnnouncements(classData.announcements || []);
+
+          // Fetch room ID from the Realtime Database
+          const dbRef = getDatabase();
+          const roomIDRef = ref(dbRef, `classRooms/${id}/roomID`);
+          get(roomIDRef).then((snapshot) => {
+            if (snapshot.exists()) {
+              setRoomID(snapshot.val());
+              console.log("Room ID fetched from the database:", snapshot.val());
+            } else {
+              console.log("Room ID not found for class:", id);
+            }
+          }).catch((error) => {
+            console.error("Error fetching room ID:", error);
+          });
         } else {
           console.log("Class not found");
         }
@@ -45,6 +63,15 @@ const ClassRoom = () => {
 
     fetchData();
   }, [id, userToken]);
+
+
+
+  useEffect(() => {
+    if (!isAuthenticated()) {
+      window.location.href = "/"; // Redirect to login page if not authenticated
+    }
+
+  }, []);
 
   const handleAnnouncement = async () => {
     try {
@@ -109,9 +136,9 @@ const ClassRoom = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       {loading ? (
-        <div class="relative flex justify-center items-center">
-          <div class="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-purple-500"></div>
-          <img src="https://www.svgrepo.com/show/509001/avatar-thinking-9.svg"  class="rounded-full h-28 w-28" />
+        <div className="relative flex justify-center items-center">
+          <div className="absolute animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-purple-500"></div>
+          <img src="https://www.svgrepo.com/show/509001/avatar-thinking-9.svg"  className="rounded-full h-28 w-28" />
         </div>
       ) : (
         <>
@@ -124,16 +151,27 @@ const ClassRoom = () => {
               Copy ID
             </button>
            
-              <Link
+             {isCreator && ( <Link
                 to={{
-                  pathname: "/Home/ClassRoom/${id}/VideoChat",
+                  pathname: `/Home/ClassRoom/${id}/VideoChat`, // Pass classroom ID as a prop to VideoChat component
                   state: { id }
                 }}
                 className="w-10rem text-xl border rounded-xl p-1 m-2 text-orange-400 hover:bg-orange-400 hover:text-white rounded-lg"
               >
                 <span className="hidden sm:inline-block"><VideoCallIcon/> VMeet</span>
-              </Link>
-          
+              </Link>)}
+           
+           
+            {roomID && (  <Link
+                to={{
+                  pathname: `/Home/ClassRoom/${id}/VideoChat`,
+                  search: `?roomID=${roomID}` // Pass the roomID as a query parameter
+                }}
+                className="w-10rem text-xl border rounded-xl p-1 m-2 text-blue-400 hover:bg-blue-400 hover:text-white rounded-lg">
+                <span className="hidden sm:inline-block"><VideoCallIcon/> Join</span>
+              </Link> )}
+           
+
           </h1>
           
           {isCreator && (

@@ -7,8 +7,9 @@ import { useState, useEffect } from "react";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyD_b1408OP4FpiYkyAyNz_lXRjwaVy2h98",
+ apiKey: "AIzaSyD_b1408OP4FpiYkyAyNz_lXRjwaVy2h98",
   authDomain: "auth-devlopment-d7e31.firebaseapp.com",
+  databaseURL: "https://auth-devlopment-d7e31-default-rtdb.firebaseio.com",
   projectId: "auth-devlopment-d7e31",
   storageBucket: "auth-devlopment-d7e31.appspot.com",
   messagingSenderId: "787757585356",
