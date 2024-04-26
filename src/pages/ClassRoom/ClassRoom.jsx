@@ -4,7 +4,7 @@ import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 import { getUserToken } from "../../utils/sessionStorage/sessionStorage";
 import { getStorage, ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import { useAnnouncementContext } from "../../contexts/AnnouncementContext";
-
+import VideoCallIcon from '@mui/icons-material/VideoCall';
 const ClassRoom = () => {
   const { id } = useParams();
   const { refreshAnnouncements } = useAnnouncementContext();
@@ -123,7 +123,7 @@ const ClassRoom = () => {
             >
               Copy ID
             </button>
-            {isCreator && (
+           
               <Link
                 to={{
                   pathname: "/Home/ClassRoom/${id}/VideoChat",
@@ -131,9 +131,9 @@ const ClassRoom = () => {
                 }}
                 className="w-10rem text-xl border rounded-xl p-1 m-2 text-orange-400 hover:bg-orange-400 hover:text-white rounded-lg"
               >
-                <span className="hidden sm:inline-block">Create Meet</span>
+                <span className="hidden sm:inline-block"><VideoCallIcon/> VMeet</span>
               </Link>
-            )}
+          
           </h1>
           
           {isCreator && (
