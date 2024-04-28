@@ -151,25 +151,31 @@ const ClassRoom = () => {
               Copy ID
             </button>
            
-             {isCreator && ( <Link
-                to={{
-                  pathname: `/Home/ClassRoom/${id}/VideoChat`, // Pass classroom ID as a prop to VideoChat component
-                  state: { id }
-                }}
-                className="w-10rem text-xl border rounded-xl p-1 m-2 text-orange-400 hover:bg-orange-400 hover:text-white rounded-lg"
-              >
-                <span className="hidden sm:inline-block"><VideoCallIcon/> VMeet</span>
-              </Link>)}
-           
-           
-            {roomID && (  <Link
-                to={{
-                  pathname: `/Home/ClassRoom/${id}/VideoChat`,
-                  search: `?roomID=${roomID}` // Pass the roomID as a query parameter
-                }}
-                className="w-10rem text-xl border rounded-xl p-1 m-2 text-blue-400 hover:bg-blue-400 hover:text-white rounded-lg">
-                <span className="hidden sm:inline-block"><VideoCallIcon/> Join</span>
-              </Link> )}
+             {isCreator && (
+  <Link
+    to={{
+      pathname: `/Home/ClassRoom/${id}/VideoChat`, // Pass classroom ID as a prop to VideoChat component
+      state: { id }
+    }}
+    className="w-10rem text-xl border rounded-xl p-1 m-2 text-orange-400 hover:bg-orange-400 hover:text-white rounded-lg max-md:m-2"
+  >
+    <span className="hidden sm:inline-block"><VideoCallIcon/> <span className="max-md:text-none">VMeet</span></span>
+    <span className="sm:hidden"><VideoCallIcon/></span>
+  </Link>
+)}
+
+{roomID && (
+  <Link
+    to={{
+      pathname: `/Home/ClassRoom/${id}/VideoChat`,
+      search: `?roomID=${roomID}` // Pass the roomID as a query parameter
+    }}
+    className="w-10rem text-xl border rounded-xl p-1 m-2 text-blue-400 hover:bg-blue-400 hover:text-white rounded-lg"
+  >
+    <span className="hidden sm:inline-block"><VideoCallIcon/> Join</span>
+    <span className="sm:hidden"><VideoCallIcon/></span>
+  </Link>
+)}
            
 
           </h1>
