@@ -60,7 +60,7 @@ body {
   color: red;
   margin-bottom: 20px;
 }
-.classroomlogo{
+.campusConnect{
     display: none;
 }
 .link {
@@ -82,7 +82,7 @@ body {
   .logo {
     display: none;
   }
-  .classroomlogo{
+  .campusConnect{
     display:unset;
     position: absolute;
     left: 8rem;

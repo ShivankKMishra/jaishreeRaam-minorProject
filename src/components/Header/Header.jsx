@@ -30,7 +30,7 @@ function Header({ toggleSidebar, toggleCreateClass, toggleJoinClass }) {
       <header className="bg-white p-4 text-white">
         <div className="flex items-center justify-between">
           <h1 className='text-4xl font-serif text-orange-400 rounded-full p-3 mx-2'>
-            <ClassRoundedIcon /> Classroom
+            <ClassRoundedIcon /> campusConnect
           </h1>
           <div className='flex'>
             <div className=' text-orange-400'>

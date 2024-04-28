@@ -7,7 +7,7 @@ import '../CSS/authentication.css';
 import classroomLogo from '../CSS/logoimages/classroomlogo.png';
 import collegeLogo from '../CSS/logoimages/collegelogo.png';
 import backgroundImg from '../CSS/logoimages/backgroundimg.png';
-
+import campusConnect from '../CSS/logoimages/campusConnect.png';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -58,12 +58,12 @@ const LoginPage = () => {
 
   return (
     <div className="container">
-      <img src={classroomLogo} alt="Classroom Logo" className="logo" />
+      <img src={campusConnect} alt="campusConnect" className="logo" />
       <img src={backgroundImg} alt="backgroundImg" className="backgroundImg  w-96  " />
       <div className="form-container">
     
         <img src={collegeLogo} alt="College Logo" />
-        <img src={classroomLogo} alt="Classroom Logo" className="classroomlogo" />
+        <img src={campusConnect} alt="campusConnect" className="campusConnect" />
         
         <h2 className="text-center">Sign in to your account</h2>
         <form onSubmit={handleSubmit}>

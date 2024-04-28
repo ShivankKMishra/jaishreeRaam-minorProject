@@ -5,7 +5,7 @@ import { auth } from './../../../firebase';
 import { setUserToken } from '../../../utils/sessionStorage/sessionStorage';
 import { getFirestore, collection, doc, setDoc } from "firebase/firestore"; // Import 'doc' from Firestore
 import '../CSS/authentication.css';
-import classroomLogo from '../CSS/logoimages/classroomlogo.png';
+import campusConnect from '../CSS/logoimages/campusConnect.png';
 import collegeLogo from '../CSS/logoimages/collegelogo.png';
 import backgroundImg from '../CSS/logoimages/backgroundimg.png';
 
@@ -101,11 +101,11 @@ const SignupPage = () => {
 
   return (
     <div className="container">
-      <img src={classroomLogo} alt="Classroom Logo" className="logo" />
+      <img src={campusConnect} alt="campusConnect" className="logo" />
       <img src={backgroundImg} alt="backgroundImg" className="backgroundImg w-96" />
       <div className="form-container">
         <img src={collegeLogo} alt="College Logo" />
-        <img src={classroomLogo} alt="Classroom Logo" className="classroomlogo" />
+        <img src={campusConnect} alt="campusConnect" className="campusConnect" />
         <h2 className="text-center">Create an account</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
