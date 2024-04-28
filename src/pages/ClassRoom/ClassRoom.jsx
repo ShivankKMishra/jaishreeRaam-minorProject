@@ -1,16 +1,19 @@
+// ClassRoom.js
+
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { getUserToken } from "../../utils/sessionStorage/sessionStorage";
 import { useAnnouncementContext } from "../../contexts/AnnouncementContext";
 import VideoCallIcon from '@mui/icons-material/VideoCall';
 import { isAuthenticated } from "../../utils/sessionStorage/sessionStorage";
 import { getDatabase, ref, get } from "firebase/database"; // Import get from Firebase Realtime Database
+import useAnnouncementFunctions from "./handleAnnouncement/announcementFunctions";
 
 const ClassRoom = () => {
   const { id } = useParams();
   const { refreshAnnouncements } = useAnnouncementContext();
-  const [loading, setLoading] = useState(true);
+  const { loading, handleAnnouncement } = useAnnouncementFunctions(); // Use the custom hook
   const [className, setClassName] = useState("");
   const [isCreator, setIsCreator] = useState(false);
   const [announcementText, setAnnouncementText] = useState("");
@@ -55,7 +58,6 @@ const ClassRoom = () => {
         } else {
           console.log("Class not found");
         }
-        setLoading(false);
       } catch (error) {
         console.error("Error fetching class:", error);
       }
@@ -64,57 +66,11 @@ const ClassRoom = () => {
     fetchData();
   }, [id, userToken]);
 
-
-
   useEffect(() => {
     if (!isAuthenticated()) {
       window.location.href = "/"; // Redirect to login page if not authenticated
     }
-
   }, []);
-
-  const handleAnnouncement = async () => {
-    try {
-      setLoading(true);
-      setShowSuccessDialog(false);
-      setShowAnnouncementSuccessDialog(false);
-      const db = getFirestore();
-      const classRef = doc(db, "classes", id);
-
-      const classSnap = await getDoc(classRef);
-      const currentAnnouncements = classSnap.data().announcements || [];
-
-      let updatedFileLocation = null;
-      if (fileLocation) {
-        const storage = getStorage();
-        const storageRef = ref(storage, `classFiles/${id}/${fileLocation.name}`);
-        await uploadBytes(storageRef, fileLocation);
-        updatedFileLocation = await getDownloadURL(storageRef);
-        console.log("File uploaded successfully:", updatedFileLocation);
-      }
-
-      const updatedAnnouncements = [...currentAnnouncements];
-      const announcementData = { text: announcementText };
-      if (updatedFileLocation) {
-        announcementData.file = updatedFileLocation;
-      }
-      updatedAnnouncements.push(announcementData);
-
-      await updateDoc(classRef, {
-        announcements: updatedAnnouncements
-      });
-
-      console.log("Announcement posted successfully");
-      setAnnouncementText("");
-      setFileLocation(null);
-      setAnnouncements(updatedAnnouncements);
-      setShowAnnouncementSuccessDialog(true);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error posting announcement:", error);
-      setLoading(false);
-    }
-  };
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
@@ -131,6 +87,12 @@ const ClassRoom = () => {
       .catch(error => {
         console.error("Error copying class ID to clipboard:", error);
       });
+  };
+
+  const handlePostAnnouncement = async () => {
+    await handleAnnouncement(id, announcementText, fileLocation, setAnnouncements, setShowAnnouncementSuccessDialog);
+    setAnnouncementText("");
+    setFileLocation(null);
   };
 
   return (
@@ -199,7 +161,7 @@ const ClassRoom = () => {
               </div>
               <button
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded-sm text-xs sm:text-sm"
-                onClick={handleAnnouncement}
+                onClick={handlePostAnnouncement}
               >
                 Post Announcement
               </button>
