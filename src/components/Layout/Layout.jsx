@@ -5,6 +5,7 @@ import { Outlet } from 'react-router-dom';
 import Footer from '../Footer/Footer';
 import JoinClass from '../Forms/JoinClass/JoinClass';
 import backgroundimg from './backgroundimg.png';
+import ChatButton from '../Chatbot/ChatBot'; // Import the ChatButton component
 
 export const Layout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -36,6 +37,9 @@ export const Layout = () => {
       </div>
       <Footer />
       <JoinClass isOpen={isJoinClassOpen} onClose={toggleJoinClass} />
+      <div className="fixed bottom-4 right-4"> {/* Positioning the ChatButton */}
+        <ChatButton />
+      </div>
     </>
   );
 };
