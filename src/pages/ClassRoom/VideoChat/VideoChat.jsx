@@ -40,8 +40,8 @@ export default function VideoChat() {
   useEffect(() => {
     const myMeeting = async (element) => {
       // generate Kit Token
-      const appID = 1313760783;
-      const serverSecret = "b61a62cbf26d887a56cd164d5c862c24";
+      const appID = 804468720;
+      const serverSecret = "cb52f0b24cbb33a72255714e45361072";
       const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(appID, serverSecret, roomID, randomID(5), randomID(5));
 
       // Create instance object from Kit Token.
